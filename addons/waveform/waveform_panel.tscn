@@ -1,0 +1,88 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/waveform/Waveform.gd" type="Script" id=1]
+[ext_resource path="res://addons/waveform/ClipScroller.gd" type="Script" id=2]
+
+[sub_resource type="AudioStreamMicrophone" id=1]
+
+[node name="WaveformPanel" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 300 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 593.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1010.0
+margin_bottom = 22.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ToolButton" type="ToolButton" parent="VBoxContainer/HBoxContainer"]
+margin_right = 43.0
+margin_bottom = 22.0
+text = "PLAY"
+flat = false
+
+[node name="ClipScroller" type="ScrollContainer" parent="VBoxContainer"]
+margin_top = 26.0
+margin_right = 1010.0
+margin_bottom = 282.0
+rect_min_size = Vector2( 0, 256 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ClipContainer" type="Control" parent="VBoxContainer/ClipScroller"]
+margin_right = 1880.0
+margin_bottom = 256.0
+rect_min_size = Vector2( 1880, 256 )
+size_flags_horizontal = 3
+
+[node name="AudioClip" type="ColorRect" parent="VBoxContainer/ClipScroller/ClipContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 200 )
+color = Color( 0.97, 0.97, 1, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayHead" type="ColorRect" parent="VBoxContainer/ClipScroller/ClipContainer"]
+margin_right = 1.0
+margin_bottom = 256.0
+rect_min_size = Vector2( 1, 256 )
+color = Color( 0.972549, 0.113725, 0.0235294, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Selection" type="ColorRect" parent="VBoxContainer/ClipScroller/ClipContainer"]
+margin_left = 333.0
+margin_right = 888.0
+margin_bottom = 256.0
+color = Color( 0.0352941, 0.682353, 1, 0.384314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioStreamIn" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 1 )
+autoplay = true
+bus = "Record"
+
+[node name="AudioStreamOut" type="AudioStreamPlayer" parent="."]
+autoplay = true
