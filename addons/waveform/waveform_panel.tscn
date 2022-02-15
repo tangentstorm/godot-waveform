@@ -46,13 +46,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WaveControl" type="Control" parent="VBoxContainer/ClipScroller"]
-margin_right = 1880.0
+[node name="WaveControl" type="ColorRect" parent="VBoxContainer/ClipScroller"]
+margin_right = 1010.0
 margin_bottom = 256.0
-rect_min_size = Vector2( 1880, 256 )
+rect_min_size = Vector2( 0, 256 )
 focus_mode = 2
 mouse_default_cursor_shape = 1
 size_flags_horizontal = 3
+color = Color( 0.345098, 0.372549, 0.419608, 1 )
 script = ExtResource( 2 )
 
 [node name="AudioStreamIn" type="AudioStreamPlayer" parent="VBoxContainer/ClipScroller/WaveControl"]
@@ -63,9 +64,8 @@ bus = "Record"
 autoplay = true
 
 [node name="AudioClip" type="ColorRect" parent="VBoxContainer/ClipScroller/WaveControl"]
-anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 0, 200 )
+rect_min_size = Vector2( 0, 256 )
 mouse_filter = 2
 color = Color( 0.909804, 0.909804, 0.909804, 1 )
 script = ExtResource( 1 )

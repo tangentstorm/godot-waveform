@@ -29,6 +29,7 @@ func _set_sample(x):
 	end = 0.0 if x == null else x.get_length()
 	mix_rate = 44100 if x == null else x.mix_rate
 	$AudioClip.sample = x
+	$AudioClip.rect_size.x = timeToPixels(x.get_length())
 	emit_signal("notify", x)
 
 func _get_sample():
