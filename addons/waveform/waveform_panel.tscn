@@ -67,7 +67,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 200 )
 mouse_filter = 2
-color = Color( 0.97, 0.97, 1, 1 )
+color = Color( 0.909804, 0.909804, 0.909804, 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
