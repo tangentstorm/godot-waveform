@@ -88,18 +88,22 @@ func _gui_input(event):
 					print("CLIP:", clip)
 					insert_sample(clip)
 					rec.set_recording_active(false)
+		return
 
+	var samp = self.sample
+	var xmax = timeToPixels(samp.get_length()) if samp else 0
+	var x = event.position.x
+	var xx = min(x, xmax)
 	if mouse_down and event is InputEventMouseMotion:
-		var x = event.position.x
 		if ! mouse_drag:
 			mouse_drag = true
 			$Selection.visible = true
-		if event.position.x < mouse_xy0.x:
+		if xx < mouse_xy0.x:
 			# if drag left, move start instead of head
-			selection.x = x
-			self.head = pixelsToTime(x)
+			selection.x = xx
+			self.head = pixelsToTime(xx)
 		else:
-			selection.y = x
+			selection.y = xx
 		$Selection.rect_position.x = selection.x
 		$Selection.rect_size.x = selection.y - selection.x
 
@@ -107,11 +111,10 @@ func _gui_input(event):
 		if event.pressed:
 			grab_focus()
 			mouse_down = true
-			mouse_xy0 = event.position
+			mouse_xy0 = Vector2(xx, event.position.y)
 			$Selection.visible = false
-			var x = event.position.x
-			selection = Vector2(x,x)
-			self.head = pixelsToTime(x)
+			selection = Vector2(xx,xx)
+			self.head = pixelsToTime(xx)
 		else: # mouse up (not mouse over, because button_index = 0)
 			mouse_down = false
 			$Selection.visible = mouse_drag and selection.x != selection.y
