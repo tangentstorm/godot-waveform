@@ -50,9 +50,17 @@ __meta__ = {
 margin_right = 1880.0
 margin_bottom = 256.0
 rect_min_size = Vector2( 1880, 256 )
+focus_mode = 2
+mouse_default_cursor_shape = 1
 size_flags_horizontal = 3
 script = ExtResource( 2 )
-playerPath = NodePath("")
+
+[node name="AudioStreamIn" type="AudioStreamPlayer" parent="VBoxContainer/ClipScroller/WaveControl"]
+stream = SubResource( 1 )
+bus = "Record"
+
+[node name="AudioStreamOut" type="AudioStreamPlayer" parent="VBoxContainer/ClipScroller/WaveControl"]
+autoplay = true
 
 [node name="AudioClip" type="ColorRect" parent="VBoxContainer/ClipScroller/WaveControl"]
 anchor_right = 1.0
@@ -85,11 +93,3 @@ color = Color( 0.0352941, 0.682353, 1, 0.384314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="AudioStreamIn" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 1 )
-autoplay = true
-bus = "Record"
-
-[node name="AudioStreamOut" type="AudioStreamPlayer" parent="."]
-autoplay = true

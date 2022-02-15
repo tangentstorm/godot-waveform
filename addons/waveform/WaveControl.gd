@@ -7,58 +7,51 @@ export var start  : float = 0.0
 export var end    : float = 0.0
 export var head   : float = 0.0 setget _set_head
 export var timeScale : int = 128 setget _set_timeScale, _get_timeScale
-export var playerPath : NodePath = '../../../AudioStreamOut'#setget _set_playerPath
-
-onready var clipNode = $AudioClip
-onready var headNode = $PlayHead
-onready var selectNode = $Selection
-onready var player = get_node(playerPath)
 
 var selection : Vector2 = Vector2.ZERO  # x=start,y=end (in seconds)
 var playing = false
 var mix_rate = 44100
 var bytesPerSample : int = 4
 
-
-func _ready():
-	# so we fire 'onready' each time during development
-	request_ready()
+func get_recorder():
+	var idx = AudioServer.get_bus_index("Record")
+	return AudioServer.get_bus_effect(idx,0)
 
 func _set_timeScale(x):
-	clipNode.timeScale = x
+	$AudioClip.timeScale = x
 
 func _get_timeScale():
-	return clipNode.timeScale
+	return $AudioClip.timeScale
 
 func _set_sample(x):
 	start = 0.0
 	self.head = start
 	end = 0.0 if x == null else x.get_length()
 	mix_rate = 44100 if x == null else x.mix_rate
-	clipNode.sample = x
+	$AudioClip.sample = x
 	emit_signal("notify", x)
 
 func _get_sample():
-	return clipNode.sample
+	return $AudioClip.sample
 
 func _set_head(x):
 	head = x
-	headNode.rect_position.x = timeToPixels(x)
+	$PlayHead.rect_position.x = timeToPixels(x)
 
 func play():
-	if clipNode.sample == null: return
+	if $AudioClip.sample == null: return
 	if head >= end: head = start
 	playing = true
-	player.stream = clipNode.sample
+	$AudioStreamOut.stream = $AudioClip.sample
 	print("end is:", end)
-	print("length is:", clipNode.sample.get_length())
+	print("length is:", $AudioClip.sample.get_length())
 	print("playing from ", head)
-	player.play(head)
-	yield(player, "finished")
+	$AudioStreamOut.play(head)
+	yield($AudioStreamOut, "finished")
 
 func stop():
 	self.playing = false
-	player.stop()
+	$AudioStreamOut.stop()
 
 func timeToPixels(t:float) -> float:
 	return t * mix_rate / timeScale
@@ -73,31 +66,54 @@ var mouse_xy0 : Vector2 = Vector2.ZERO
 var mouse_down : bool = false
 var mouse_drag : bool = false
 func _gui_input(event):
+
+	if event is InputEventKey:
+		if event.echo and event.pressed: return # ignore repeat keys
+		if event.pressed:
+			match event.scancode:
+				KEY_HOME: head = 0.0
+				KEY_END: delete_selection()
+				KEY_DELETE: delete_selection()
+				KEY_SPACE: stop() if playing else play()
+				KEY_INSERT:
+					$AudioStreamIn.playing = true
+					get_recorder().set_recording_active(true)
+		else:
+			match event.scancode:
+				KEY_INSERT:
+					var rec = get_recorder()
+					var clip = rec.get_recording()
+					print("DONE RECORDING. recorder:", rec)
+					print("CLIP:", clip)
+					insert_sample(clip)
+					rec.set_recording_active(false)
+
 	if mouse_down and event is InputEventMouseMotion:
 		var x = event.position.x
 		if ! mouse_drag:
 			mouse_drag = true
-			selectNode.visible = true
+			$Selection.visible = true
 		if event.position.x < mouse_xy0.x:
 			# if drag left, move start instead of head
 			selection.x = x
 			self.head = pixelsToTime(x)
 		else:
 			selection.y = x
-		selectNode.rect_position.x = selection.x
-		selectNode.rect_size.x = selection.y - selection.x
+		$Selection.rect_position.x = selection.x
+		$Selection.rect_size.x = selection.y - selection.x
 
 	if event is InputEventMouseButton and event.button_index == 1:
-		var x = event.position.x
 		if event.pressed:
+			grab_focus()
 			mouse_down = true
 			mouse_xy0 = event.position
+			$Selection.visible = false
+			var x = event.position.x
 			selection = Vector2(x,x)
-			selectNode.visible = false
 			self.head = pixelsToTime(x)
 		else: # mouse up (not mouse over, because button_index = 0)
 			mouse_down = false
-			selectNode.visible = mouse_drag and selection.x != selection.y
+			$Selection.visible = mouse_drag and selection.x != selection.y
 			mouse_drag = false
 
 func insert_sample(x):
@@ -112,7 +128,7 @@ func insert_sample(x):
 
 func delete_selection():
 	var s = self.sample
-	if s and selectNode.visible:
+	if s and $Selection.visible:
 		var a = pixelsToIndex(selection.x)
 		var Z = s.data.size()-1
 		var z = int(min(Z, pixelsToIndex(selection.y)))
@@ -127,3 +143,4 @@ func _process(dt):
 		self.head += dt
 		if self.head > self.end:
 			playing = false
+
