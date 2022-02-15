@@ -15,6 +15,7 @@ run/main_scene="res://addons/waveform/waveform_panel.tscn"
 
 [audio]
 
+default_bus_layout="res://addons/waveform/waveform_bus_layout.tres"
 enable_audio_input=true
 
 [editor_plugins]

@@ -5,7 +5,7 @@ var dock : Control
 
 func handles(object)->bool:
 	if object is AudioStreamSample:
-		var cs = dock.find_node("ClipScroller")
+		var cs = dock.find_node("WaveControl")
 		cs.sample = object
 		return true
 	else: return false

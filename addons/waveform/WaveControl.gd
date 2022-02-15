@@ -1,4 +1,4 @@
-tool extends ScrollContainer
+tool extends Control
 
 signal notify(sample)
 
@@ -7,17 +7,22 @@ export var start  : float = 0.0
 export var end    : float = 0.0
 export var head   : float = 0.0 setget _set_head
 export var timeScale : int = 128 setget _set_timeScale, _get_timeScale
-export var playerPath : NodePath #setget _set_playerPath
+export var playerPath : NodePath = '../../../AudioStreamOut'#setget _set_playerPath
 
-onready var clipNode = $ClipContainer/AudioClip
-onready var headNode = $ClipContainer/PlayHead
-onready var selectNode = $ClipContainer/Selection
+onready var clipNode = $AudioClip
+onready var headNode = $PlayHead
+onready var selectNode = $Selection
 onready var player = get_node(playerPath)
 
 var selection : Vector2 = Vector2.ZERO  # x=start,y=end (in seconds)
 var playing = false
 var mix_rate = 44100
 var bytesPerSample : int = 4
+
+
+func _ready():
+	# so we fire 'onready' each time during development
+	request_ready()
 
 func _set_timeScale(x):
 	clipNode.timeScale = x
@@ -67,9 +72,9 @@ func pixelsToIndex(px:float) -> int:
 var mouse_xy0 : Vector2 = Vector2.ZERO
 var mouse_down : bool = false
 var mouse_drag : bool = false
-func _input(event):
+func _gui_input(event):
 	if mouse_down and event is InputEventMouseMotion:
-		var x = event.position.x - rect_position.x
+		var x = event.position.x
 		if ! mouse_drag:
 			mouse_drag = true
 			selectNode.visible = true
@@ -83,7 +88,7 @@ func _input(event):
 		selectNode.rect_size.x = selection.y - selection.x
 
 	if event is InputEventMouseButton and event.button_index == 1:
-		var x = event.position.x - rect_position.x
+		var x = event.position.x
 		if event.pressed:
 			mouse_down = true
 			mouse_xy0 = event.position

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/waveform/Waveform.gd" type="Script" id=1]
-[ext_resource path="res://addons/waveform/ClipScroller.gd" type="Script" id=2]
+[ext_resource path="res://addons/waveform/WaveControl.gd" type="Script" id=2]
 
 [sub_resource type="AudioStreamMicrophone" id=1]
 
@@ -9,6 +9,7 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 300 )
+mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -40,40 +41,46 @@ margin_top = 26.0
 margin_right = 1010.0
 margin_bottom = 282.0
 rect_min_size = Vector2( 0, 256 )
-script = ExtResource( 2 )
+mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ClipContainer" type="Control" parent="VBoxContainer/ClipScroller"]
+[node name="WaveControl" type="Control" parent="VBoxContainer/ClipScroller"]
 margin_right = 1880.0
 margin_bottom = 256.0
 rect_min_size = Vector2( 1880, 256 )
 size_flags_horizontal = 3
+script = ExtResource( 2 )
+playerPath = NodePath("")
 
-[node name="AudioClip" type="ColorRect" parent="VBoxContainer/ClipScroller/ClipContainer"]
+[node name="AudioClip" type="ColorRect" parent="VBoxContainer/ClipScroller/WaveControl"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 200 )
+mouse_filter = 2
 color = Color( 0.97, 0.97, 1, 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PlayHead" type="ColorRect" parent="VBoxContainer/ClipScroller/ClipContainer"]
+[node name="PlayHead" type="ColorRect" parent="VBoxContainer/ClipScroller/WaveControl"]
 margin_right = 1.0
 margin_bottom = 256.0
 rect_min_size = Vector2( 1, 256 )
+mouse_filter = 2
 color = Color( 0.972549, 0.113725, 0.0235294, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Selection" type="ColorRect" parent="VBoxContainer/ClipScroller/ClipContainer"]
+[node name="Selection" type="ColorRect" parent="VBoxContainer/ClipScroller/WaveControl"]
+visible = false
 margin_left = 333.0
 margin_right = 888.0
 margin_bottom = 256.0
+mouse_filter = 2
 color = Color( 0.0352941, 0.682353, 1, 0.384314 )
 __meta__ = {
 "_edit_use_anchors_": false
