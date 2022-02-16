@@ -6,7 +6,9 @@ var dock : Control
 func handles(object)->bool:
 	if object is AudioStreamSample:
 		var cs = dock.find_node("WaveControl")
+		var lp:LineEdit = dock.find_node("led_path")
 		cs.sample = object
+		lp.text = object.resource_path
 		return true
 	else: return false
 

@@ -2,6 +2,7 @@ tool extends Control
 
 signal notify(sample)
 
+export var path : String = ''
 export var sample : AudioStreamSample setget _set_sample,_get_sample
 export var start  : float = 0.0
 export var end    : float = 0.0
@@ -148,3 +149,18 @@ func _process(dt):
 		if self.head > self.end:
 			playing = false
 
+func _on_btn_save_pressed():
+	var sam = $AudioClip.sample
+	if sam:
+		var fake_plugin = EditorPlugin.new()
+		var ed = fake_plugin.get_editor_interface()
+		var fs = ed.get_resource_filesystem()
+		var result = sam.save_to_wav(path)
+		if result == OK: print("saved waveform to: ", path)
+		print("result of save attempt:", result)
+		fs.scan()
+		fake_plugin.queue_free()
+	else: print("no sample to save.")
+
+func _on_led_path_text_changed(new_text):
+	path = new_text
