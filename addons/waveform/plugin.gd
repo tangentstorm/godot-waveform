@@ -1,14 +1,11 @@
 tool
 extends EditorPlugin
 
-var dock : Control
+var dock : WaveformPanel
 
 func handles(object)->bool:
 	if object is AudioStreamSample:
-		var cs = dock.find_node("WaveControl")
-		var lp:LineEdit = dock.find_node("led_path")
-		cs.sample = object
-		lp.text = object.resource_path
+		dock.edit_sample(object)
 		return true
 	else: return false
 

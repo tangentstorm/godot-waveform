@@ -30,7 +30,7 @@ func _set_sample(x):
 	end = 0.0 if x == null else x.get_length()
 	mix_rate = 44100 if x == null else x.mix_rate
 	$AudioClip.sample = x
-	$AudioClip.rect_size.x = timeToPixels(x.get_length())
+	$AudioClip.rect_size.x = timeToPixels(end)
 	emit_signal("notify", x)
 
 func _get_sample():
@@ -149,18 +149,24 @@ func _process(dt):
 		if self.head > self.end:
 			playing = false
 
-func _on_btn_save_pressed():
-	var sam = $AudioClip.sample
-	if sam:
+func update_editor():
+	# update the editor filesystem after a save
+	# (only makes sense when running as a tool)
+	if Engine.editor_hint:
 		var fake_plugin = EditorPlugin.new()
 		var ed = fake_plugin.get_editor_interface()
 		var fs = ed.get_resource_filesystem()
-		var result = sam.save_to_wav(path)
-		if result == OK: print("saved waveform to: ", path)
-		print("result of save attempt:", result)
 		fs.scan()
 		fake_plugin.queue_free()
+
+func _on_btn_save_pressed():
+	var sam = $AudioClip.sample
+	if sam:
+		var result = sam.save_to_wav(path)
+		if result == OK: print("saved waveform to: ", path)
+		else: print("failed saving to:", path, "result was:", result)
+		update_editor()
 	else: print("no sample to save.")
 
-func _on_led_path_text_changed(new_text):
-	path = new_text
+func _on_led_path_text_changed(new_path):
+	path = new_path

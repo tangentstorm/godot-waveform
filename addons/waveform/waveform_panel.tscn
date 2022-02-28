@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/waveform/Waveform.gd" type="Script" id=1]
 [ext_resource path="res://addons/waveform/WaveControl.gd" type="Script" id=2]
+[ext_resource path="res://addons/waveform/WaveformPanel.gd" type="Script" id=3]
 
 [sub_resource type="AudioStreamMicrophone" id=1]
 
@@ -10,6 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 300 )
 mouse_filter = 1
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -17,14 +19,14 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 593.0
+margin_right = 1913.0
+margin_bottom = 1073.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1010.0
+margin_right = 1906.0
 margin_bottom = 24.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -48,17 +50,17 @@ __meta__ = {
 
 [node name="led_path" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 margin_left = 78.0
-margin_right = 478.0
+margin_right = 558.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 400, 24 )
+rect_min_size = Vector2( 480, 24 )
 text = "res://audio/"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="btn_save" type="ToolButton" parent="VBoxContainer/HBoxContainer"]
-margin_left = 482.0
-margin_right = 523.0
+margin_left = 562.0
+margin_right = 603.0
 margin_bottom = 24.0
 text = "Save"
 __meta__ = {
@@ -67,7 +69,7 @@ __meta__ = {
 
 [node name="ClipScroller" type="ScrollContainer" parent="VBoxContainer"]
 margin_top = 28.0
-margin_right = 1010.0
+margin_right = 1906.0
 margin_bottom = 284.0
 rect_min_size = Vector2( 0, 256 )
 mouse_filter = 1
@@ -76,7 +78,7 @@ __meta__ = {
 }
 
 [node name="WaveControl" type="ColorRect" parent="VBoxContainer/ClipScroller"]
-margin_right = 1010.0
+margin_right = 1906.0
 margin_bottom = 256.0
 rect_min_size = Vector2( 0, 256 )
 focus_mode = 2
