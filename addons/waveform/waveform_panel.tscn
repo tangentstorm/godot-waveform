@@ -50,17 +50,17 @@ __meta__ = {
 
 [node name="led_path" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 margin_left = 78.0
-margin_right = 558.0
+margin_right = 718.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 480, 24 )
+rect_min_size = Vector2( 640, 24 )
 text = "res://audio/"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="btn_save" type="ToolButton" parent="VBoxContainer/HBoxContainer"]
-margin_left = 562.0
-margin_right = 603.0
+margin_left = 722.0
+margin_right = 763.0
 margin_bottom = 24.0
 text = "Save"
 __meta__ = {

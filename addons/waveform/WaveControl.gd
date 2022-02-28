@@ -162,9 +162,9 @@ func update_editor():
 func _on_btn_save_pressed():
 	var sam = $AudioClip.sample
 	if sam:
-		var result = sam.save_to_wav(path)
-		if result == OK: print("saved waveform to: ", path)
-		else: print("failed saving to:", path, "result was:", result)
+		var msg = sam.save_to_wav(path)
+		if msg == OK: print("saved waveform to: ", path)
+		else: print("failed saving to: ", path, ". result was:", msg)
 		update_editor()
 	else: print("no sample to save.")
 
