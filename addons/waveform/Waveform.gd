@@ -1,4 +1,4 @@
-tool extends ColorRect
+tool class_name Waveform extends ColorRect
 
 # draw waveform for audio clips
 # samples are in pcm format
