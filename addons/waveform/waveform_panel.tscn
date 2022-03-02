@@ -125,5 +125,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/btn_play" to="VBoxContainer/ClipScroller/WaveControl" method="_on_btn_play_pressed"]
 [connection signal="text_changed" from="VBoxContainer/HBoxContainer/led_path" to="VBoxContainer/ClipScroller/WaveControl" method="_on_led_path_text_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/btn_save" to="VBoxContainer/ClipScroller/WaveControl" method="_on_btn_save_pressed"]

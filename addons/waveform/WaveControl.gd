@@ -170,3 +170,6 @@ func _on_btn_save_pressed():
 
 func _on_led_path_text_changed(new_path):
 	path = new_path
+
+func _on_btn_play_pressed():
+	play()
