@@ -89,6 +89,7 @@ func _gui_input(event):
 					print("CLIP:", clip)
 					insert_sample(clip)
 					rec.set_recording_active(false)
+		get_tree().set_input_as_handled()
 		return
 
 	var samp = self.sample
