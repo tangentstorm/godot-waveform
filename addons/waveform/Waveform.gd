@@ -1,4 +1,5 @@
-tool class_name Waveform extends ColorRect
+@tool
+class_name Waveform extends ColorRect
 
 # draw waveform for audio clips
 # samples are in pcm format
@@ -6,27 +7,27 @@ tool class_name Waveform extends ColorRect
 # pulse code = amplitude as 8 or 16 bit number
 # data format is array of alternating (left sample, right sample) values
 
-export var sample : AudioStreamSample = null setget _set_sample
-export var timeScale : int = 128
-export var active : bool = true setget _set_active
+@export var sample : AudioStreamWAV = null : set = _set_sample
+@export var timeScale : int = 128
+@export var active : bool = true : set = _set_active
 var bytesPerSample: int
 
 var offSet = 0
 
 func _set_active(x):
 	active = x
-	color = Color.ghostwhite if active else Color.goldenrod
-	update()
+	color = Color.GHOST_WHITE if active else Color.GOLDENROD
+	queue_redraw()
 
 func _set_sample(x):
 	sample = x
 	offSet = 0
 	bytesPerSample = _bytesPerSample()
-	update()
+	queue_redraw()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	update()
+	queue_redraw()
 
 func _bytesPerSample():
 	if sample == null: return 0
@@ -61,13 +62,13 @@ func getStereoSample16(i):
 func _draw():
 	if sample:
 		# printSampleInfo()
-		var o = Vector2(0,rect_size.y/2)
+		var o = Vector2(0,size.y/2)
 		var pen = o + Vector2.ZERO
-		for x in range(rect_size.x):
+		for x in range(size.x):
 			var i = timeScale*(offSet+x) * bytesPerSample
 			if i >= sample.data.size(): break
-			var v = getStereoSample16(i)/32768.0 * (rect_size.y /2)
+			var v = getStereoSample16(i)/32768.0 * (size.y /2)
 			var next = o + Vector2(x, v)
-			draw_line(pen, next, Color.black)
+			draw_line(pen, next, Color.BLACK)
 			pen = next
-		# offSet += rect_size.x / 2  # auto-scroll
+		# offSet += size.x / 2  # auto-scroll

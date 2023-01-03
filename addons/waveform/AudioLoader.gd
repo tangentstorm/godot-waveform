@@ -52,19 +52,19 @@ static func report_errors(err, filepath):
 		print("Unknown error with file ", filepath, " error code: ", err)
 
 static func loadfile(filepath):
-	var file = File.new()
-	var err = file.open(filepath, File.READ)
+	var file = FileAccess.new()
+	var err = file.open(filepath, FileAccess.READ)
 	if err != OK:
 		report_errors(err, filepath)
 		file.close()
-		return AudioStreamSample.new()
+		return AudioStreamWAV.new()
 
-	var bytes = file.get_buffer(file.get_len())
+	var bytes = file.get_buffer(file.get_length())
 
 	# if File is wav
 	if filepath.ends_with(".wav"):
 
-		var newstream = AudioStreamSample.new()
+		var newstream = AudioStreamWAV.new()
 
 		#---------------------------
 		#parrrrseeeeee!!! :D
@@ -85,7 +85,7 @@ static func loadfile(filepath):
 				var formatsubchunksize = bytes[i+4] + (bytes[i+5] << 8) + (bytes[i+6] << 16) + (bytes[i+7] << 24)
 				trace("Format subchunk size: " + str(formatsubchunksize))
 				
-				#using formatsubchunk index so it's easier to understand what's going on
+				#using formatsubchunk index so it's easier to understand what's going checked
 				var fsc0 = i+8 #fsc0 is byte 8 after start of "fmt "
 
 				#get format code [Bytes 0-1]
@@ -95,19 +95,19 @@ static func loadfile(filepath):
 				elif format_code == 1: format_name = "16_BITS"
 				elif format_code == 2: format_name = "IMA_ADPCM"
 				trace("Format: " + str(format_code) + " " + format_name)
-				#assign format to our AudioStreamSample
+				#assign format to our AudioStreamWAV
 				newstream.format = format_code
 				
 				#get channel num [Bytes 2-3]
 				var channel_num = bytes[fsc0+2] + (bytes[fsc0+3] << 8)
 				trace("Number of channels: " + str(channel_num))
-				#set our AudioStreamSample to stereo if needed
+				#set our AudioStreamWAV to stereo if needed
 				if channel_num == 2: newstream.stereo = true
 				
 				#get sample rate [Bytes 4-7]
 				var sample_rate = bytes[fsc0+4] + (bytes[fsc0+5] << 8) + (bytes[fsc0+6] << 16) + (bytes[fsc0+7] << 24)
 				trace("Sample rate: " + str(sample_rate))
-				#set our AudioStreamSample mixrate
+				#set our AudioStreamWAV mixrate
 				newstream.mix_rate = sample_rate
 				
 				#get byte_rate [Bytes 8-11] because we can
@@ -143,7 +143,7 @@ static func loadfile(filepath):
 
 	#if file is ogg
 	elif filepath.ends_with(".ogg"):
-		var newstream = AudioStreamOGGVorbis.new()
+		var newstream = AudioStreamOggVorbis.new()
 		newstream.loop = true #set to false or delete this line if you don't want to loop
 		newstream.data = bytes
 		return newstream

@@ -6,21 +6,46 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
+config_version=5
+
+_global_script_classes=[{
+"base": "RefCounted",
+"class": &"AudioLoader",
+"language": &"GDScript",
+"path": "res://addons/waveform/AudioLoader.gd"
+}, {
+"base": "ColorRect",
+"class": &"Waveform",
+"language": &"GDScript",
+"path": "res://addons/waveform/Waveform.gd"
+}, {
+"base": "PanelContainer",
+"class": &"WaveformPanel",
+"language": &"GDScript",
+"path": "res://addons/waveform/WaveformPanel.gd"
+}]
+_global_script_class_icons={
+"AudioLoader": "",
+"Waveform": "",
+"WaveformPanel": ""
+}
 
 [application]
 
 config/name="godot-waveform"
 run/main_scene="res://addons/waveform/waveform_panel.tscn"
+config/features=PackedStringArray("4.0")
 
 [audio]
 
+buses/default_bus_layout="res://addons/waveform/waveform_bus_layout.tres"
+driver/enable_input=true
 default_bus_layout="res://addons/waveform/waveform_bus_layout.tres"
 enable_audio_input=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/waveform/plugin.cfg" )
+enabled=PackedStringArray("res://addons/waveform/plugin.cfg")
 
 [physics]
 

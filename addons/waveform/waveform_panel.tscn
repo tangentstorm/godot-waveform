@@ -1,129 +1,86 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://c0opjerj385mw"]
 
-[ext_resource path="res://addons/waveform/Waveform.gd" type="Script" id=1]
-[ext_resource path="res://addons/waveform/WaveControl.gd" type="Script" id=2]
-[ext_resource path="res://addons/waveform/WaveformPanel.gd" type="Script" id=3]
+[ext_resource type="Script" path="res://addons/waveform/Waveform.gd" id="1"]
+[ext_resource type="Script" path="res://addons/waveform/WaveControl.gd" id="2"]
+[ext_resource type="Script" path="res://addons/waveform/WaveformPanel.gd" id="3"]
 
-[sub_resource type="AudioStreamMicrophone" id=1]
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_gj12o"]
 
 [node name="WaveformPanel" type="PanelContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 0, 300 )
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 1
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("3")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1913.0
-margin_bottom = 1073.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1906.0
-margin_bottom = 24.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 2
 
-[node name="btn_play" type="ToolButton" parent="VBoxContainer/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 24.0
+[node name="btn_play" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
 text = "Play"
-flat = false
 
 [node name="lbl_path" type="Label" parent="VBoxContainer/HBoxContainer"]
-margin_left = 42.0
-margin_top = 5.0
-margin_right = 74.0
-margin_bottom = 19.0
+layout_mode = 2
 text = "Path:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="led_path" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
-margin_left = 78.0
-margin_right = 718.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 640, 24 )
+layout_mode = 2
+size_flags_horizontal = 3
 text = "res://audio/"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="btn_save" type="ToolButton" parent="VBoxContainer/HBoxContainer"]
-margin_left = 722.0
-margin_right = 763.0
-margin_bottom = 24.0
+[node name="btn_save" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
 text = "Save"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ClipScroller" type="ScrollContainer" parent="VBoxContainer"]
-margin_top = 28.0
-margin_right = 1906.0
-margin_bottom = 284.0
-rect_min_size = Vector2( 0, 256 )
-mouse_filter = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="WaveControl" type="ColorRect" parent="VBoxContainer/ClipScroller"]
-margin_right = 1906.0
-margin_bottom = 256.0
-rect_min_size = Vector2( 0, 256 )
+layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 2
 mouse_default_cursor_shape = 1
-size_flags_horizontal = 3
-color = Color( 0.345098, 0.372549, 0.419608, 1 )
-script = ExtResource( 2 )
+color = Color(0.345098, 0.372549, 0.419608, 1)
+script = ExtResource("2")
 
 [node name="AudioStreamIn" type="AudioStreamPlayer" parent="VBoxContainer/ClipScroller/WaveControl"]
-stream = SubResource( 1 )
-bus = "Record"
+stream = SubResource("AudioStreamMicrophone_gj12o")
+bus = &"Record"
 
 [node name="AudioStreamOut" type="AudioStreamPlayer" parent="VBoxContainer/ClipScroller/WaveControl"]
 autoplay = true
 
 [node name="AudioClip" type="ColorRect" parent="VBoxContainer/ClipScroller/WaveControl"]
+layout_mode = 1
+anchors_preset = 9
 anchor_bottom = 1.0
-rect_min_size = Vector2( 0, 256 )
+grow_vertical = 2
 mouse_filter = 2
-color = Color( 0.909804, 0.909804, 0.909804, 1 )
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0.909804, 0.909804, 0.909804, 1)
+script = ExtResource("1")
 
 [node name="PlayHead" type="ColorRect" parent="VBoxContainer/ClipScroller/WaveControl"]
-margin_right = 1.0
-margin_bottom = 256.0
-rect_min_size = Vector2( 1, 256 )
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 256.0
 mouse_filter = 2
-color = Color( 0.972549, 0.113725, 0.0235294, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0.972549, 0.113725, 0.0235294, 1)
 
 [node name="Selection" type="ColorRect" parent="VBoxContainer/ClipScroller/WaveControl"]
 visible = false
-margin_left = 333.0
-margin_right = 888.0
-margin_bottom = 256.0
+layout_mode = 0
+offset_left = 333.0
+offset_right = 888.0
+offset_bottom = 256.0
 mouse_filter = 2
-color = Color( 0.0352941, 0.682353, 1, 0.384314 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0.0352941, 0.682353, 1, 0.384314)
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/btn_play" to="VBoxContainer/ClipScroller/WaveControl" method="_on_btn_play_pressed"]
 [connection signal="text_changed" from="VBoxContainer/HBoxContainer/led_path" to="VBoxContainer/ClipScroller/WaveControl" method="_on_led_path_text_changed"]

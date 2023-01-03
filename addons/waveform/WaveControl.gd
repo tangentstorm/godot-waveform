@@ -1,13 +1,14 @@
-tool extends Control
+@tool
+extends Control
 
 signal notify(sample)
 
-export var path : String = ''
-export var sample : AudioStreamSample setget _set_sample,_get_sample
-export var start  : float = 0.0
-export var end    : float = 0.0
-export var head   : float = 0.0 setget _set_head
-export var timeScale : int = 128 setget _set_timeScale, _get_timeScale
+@export var path : String = ''
+@export var sample : AudioStreamWAV : get = _get_sample, set = _set_sample
+@export var start  : float = 0.0
+@export var end    : float = 0.0
+@export var head   : float = 0.0 : set = _set_head
+@export var timeScale : int = 128 : get = _get_timeScale, set = _set_timeScale
 
 var selection : Vector2 = Vector2.ZERO  # x=start,y=end (in seconds)
 var playing = false
@@ -30,7 +31,7 @@ func _set_sample(x):
 	end = 0.0 if x == null else x.get_length()
 	mix_rate = 44100 if x == null else x.mix_rate
 	$AudioClip.sample = x
-	$AudioClip.rect_size.x = timeToPixels(end)
+	$AudioClip.size.x = timeToPixels(end)
 	emit_signal("notify", x)
 
 func _get_sample():
@@ -38,7 +39,7 @@ func _get_sample():
 
 func _set_head(x):
 	head = x
-	$PlayHead.rect_position.x = timeToPixels(x)
+	$PlayHead.position.x = timeToPixels(x)
 
 func play():
 	if $AudioClip.sample == null: return
@@ -49,7 +50,7 @@ func play():
 	print("length is:", $AudioClip.sample.get_length())
 	print("playing from ", head)
 	$AudioStreamOut.play(head)
-	yield($AudioStreamOut, "finished")
+	await $AudioStreamOut.finished
 
 func stop():
 	self.playing = false
@@ -76,7 +77,7 @@ func _gui_input(event):
 				KEY_HOME: head = 0.0
 				KEY_END: delete_selection()
 				KEY_DELETE: delete_selection()
-				KEY_SPACE: stop() if playing else play()
+				KEY_SPACE: stop() if playing else await play()
 				KEY_INSERT:
 					$AudioStreamIn.playing = true
 					get_recorder().set_recording_active(true)
@@ -106,8 +107,8 @@ func _gui_input(event):
 			self.head = pixelsToTime(xx)
 		else:
 			selection.y = xx
-		$Selection.rect_position.x = selection.x
-		$Selection.rect_size.x = selection.y - selection.x
+		$Selection.position.x = selection.x
+		$Selection.size.x = selection.y - selection.x
 
 	if event is InputEventMouseButton and event.button_index == 1:
 		if event.pressed:
@@ -138,7 +139,7 @@ func delete_selection():
 		var a = pixelsToIndex(selection.x)
 		var Z = s.data.size()-1
 		var z = int(min(Z, pixelsToIndex(selection.y)))
-		var d = PoolByteArray()
+		var d = PackedByteArray()
 		if a>0: d.append_array(s.data.subarray(0,a-1))
 		if z<Z: d.append_array(s.data.subarray(z, s.data.size()-1))
 		s.data = d
@@ -153,7 +154,7 @@ func _process(dt):
 func update_editor():
 	# update the editor filesystem after a save
 	# (only makes sense when running as a tool)
-	if Engine.editor_hint:
+	if Engine.is_editor_hint():
 		var fake_plugin = EditorPlugin.new()
 		var ed = fake_plugin.get_editor_interface()
 		var fs = ed.get_resource_filesystem()

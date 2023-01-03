@@ -1,9 +1,10 @@
-tool class_name WaveformPanel extends PanelContainer
+@tool
+class_name WaveformPanel extends PanelContainer
 
 func _ready():
 	pass
 
-func edit_sample(sample:AudioStreamSample):
+func edit_sample(sample:AudioStreamWAV):
 	edit_path(sample.resource_path)
 
 func edit_path(path):
@@ -24,14 +25,14 @@ func edit_path(path):
 	# TODO: try this load-at-runtime solution so standalone can load/save audio
 
 	# meanwhile, load a new copy (if one exists), bypassing the cache:
-	var exists = File.new().file_exists(path)
+	var exists = FileAccess.file_exists(path)
 	if exists: print("file exists. loading: ", path)
 	else: print("path does not exist yet:", path)
-	var sample:AudioStreamSample = null
-	if exists: sample = ResourceLoader.load(path, "AudioStreamSample", true)
+	var sample:AudioStreamWAV = null
+	if exists: sample = ResourceLoader.load(path, "AudioStreamWAV", true)
 	print("sample that got loaded: ", sample)
-	find_node("WaveControl").sample = sample
+	find_child("WaveControl").sample = sample
 
-	var led = find_node("led_path")
+	var led = find_child("led_path")
 	# setting led.text doesn't emit the signal, so do it manually:
 	led.text = path; led.emit_signal("text_changed", path)
