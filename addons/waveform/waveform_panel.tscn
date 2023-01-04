@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://addons/waveform/WaveControl.gd" id="2"]
 [ext_resource type="Script" path="res://addons/waveform/WaveformPanel.gd" id="3"]
 
-[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_r5gtb"]
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_cpkqb"]
 
 [node name="WaveformPanel" type="PanelContainer"]
 anchors_preset = 15
@@ -39,11 +39,12 @@ layout_mode = 2
 text = "Save"
 
 [node name="ClipScroller" type="ScrollContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 256)
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="WaveControl" type="ColorRect" parent="VBoxContainer/ClipScroller"]
-custom_minimum_size = Vector2(0, 200)
+custom_minimum_size = Vector2(0, 256)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
@@ -52,7 +53,7 @@ color = Color(0.345098, 0.372549, 0.419608, 1)
 script = ExtResource("2")
 
 [node name="AudioStreamIn" type="AudioStreamPlayer" parent="VBoxContainer/ClipScroller/WaveControl"]
-stream = SubResource("AudioStreamMicrophone_r5gtb")
+stream = SubResource("AudioStreamMicrophone_cpkqb")
 autoplay = true
 bus = &"Record"
 
