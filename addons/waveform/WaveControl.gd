@@ -69,11 +69,10 @@ var mouse_xy0 : Vector2 = Vector2.ZERO
 var mouse_down : bool = false
 var mouse_drag : bool = false
 func _gui_input(event):
-
 	if event is InputEventKey:
 		if event.echo and event.pressed: return # ignore repeat keys
 		if event.pressed:
-			match event.scancode:
+			match event.keycode:
 				KEY_HOME: head = 0.0
 				KEY_END: delete_selection()
 				KEY_DELETE: delete_selection()
@@ -82,7 +81,7 @@ func _gui_input(event):
 					$AudioStreamIn.playing = true
 					get_recorder().set_recording_active(true)
 		else:
-			match event.scancode:
+			match event.keycode:
 				KEY_INSERT:
 					var rec = get_recorder()
 					var clip = rec.get_recording()
@@ -90,7 +89,7 @@ func _gui_input(event):
 					print("CLIP:", clip)
 					insert_sample(clip)
 					rec.set_recording_active(false)
-		get_tree().set_input_as_handled()
+		accept_event()
 		return
 
 	var samp = self.sample
