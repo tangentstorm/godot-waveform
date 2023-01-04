@@ -139,8 +139,8 @@ func delete_selection():
 		var Z = s.data.size()-1
 		var z = int(min(Z, pixelsToIndex(selection.y)))
 		var d = PackedByteArray()
-		if a>0: d.append_array(s.data.subarray(0,a-1))
-		if z<Z: d.append_array(s.data.subarray(z, s.data.size()-1))
+		if a>0: d.append_array(s.data.slice(0,a-1))
+		if z<Z: d.append_array(s.data.slice(z, s.data.size()-1))
 		s.data = d
 		self.sample = s
 
