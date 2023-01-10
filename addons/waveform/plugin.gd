@@ -3,7 +3,7 @@ extends EditorPlugin
 
 var dock : WaveformPanel
 
-func handles(object)->bool:
+func _handles(object)->bool:
 	if object is AudioStreamWAV:
 		dock.edit_sample(object)
 		return true
