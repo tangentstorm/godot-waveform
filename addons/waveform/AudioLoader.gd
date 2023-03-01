@@ -52,11 +52,10 @@ static func report_errors(err, filepath):
 		print("Unknown error with file ", filepath, " error code: ", err)
 
 static func loadfile(filepath):
-	var file = FileAccess.new()
-	var err = file.open(filepath, FileAccess.READ)
+	var file = FileAccess.open(filepath, FileAccess.READ)
+	var err = file.get_open_error()
 	if err != OK:
 		report_errors(err, filepath)
-		file.close()
 		return AudioStreamWAV.new()
 
 	var bytes = file.get_buffer(file.get_length())

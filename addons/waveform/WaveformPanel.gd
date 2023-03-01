@@ -26,11 +26,11 @@ func edit_path(path):
 
 	# meanwhile, load a new copy (if one exists), bypassing the cache:
 	var exists = FileAccess.file_exists(path)
-	if exists: print("file exists. loading: ", path)
-	else: print("path does not exist yet:", path)
+	#if exists: print("file exists. loading: ", path)
+	#else: print("path does not exist yet:", path)
 	var sample:AudioStreamWAV = null
-	if exists: sample = ResourceLoader.load(path, "AudioStreamWAV", true)
-	print("sample that got loaded: ", sample)
+	if exists: sample = ResourceLoader.load(path, "AudioStreamWAV", ResourceLoader.CACHE_MODE_IGNORE)
+	#print("sample that got loaded: ", sample)
 	find_child("WaveControl").sample = sample
 
 	var led = find_child("led_path")
